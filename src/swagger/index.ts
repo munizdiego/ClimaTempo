@@ -1,3 +1,8 @@
+/**
+ * Índice que cria a aplicação UI de swagger e o rastreamento das rotas e schemas,
+ * incorporando a rota /swagger para realizar as requisições http no frontend.
+ */
+
 import { Router } from "express";
 import swaggerJsDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -7,9 +12,9 @@ const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "API de Compras Públicas",
+      title: "Consulta de Clima e Tempo",
       version: "1.0.0",
-      description: "Documentação da API de compras públicas",
+      description: "Previsão para os próximos 5 dias de qualquer lugar da Terra. Inclui dados de previsão do tempo para cada 3 horas.",
     },
     servers: [
       {
@@ -19,8 +24,8 @@ const swaggerOptions = {
     ],
   },
   apis: [
-    path.join(__dirname, "../routes/*.ts"),
-    path.join(__dirname, "../swagger/schemas/*.ts"),
+    path.join(__dirname, "../swagger/routes/*.ts"),   // importação das rotas para utilização no swagger
+    path.join(__dirname, "../swagger/schemas/*.ts"),  // importação dos schemas para utilização no swagger
   ],
 };
 
