@@ -1,0 +1,11 @@
+#Ignorar as seguintes pastas ou arquivos
+# Arquivos de configuração de IDE
+.idea/
+.vscode/
+
+# Arquivos de dependências
+node_modules/
+dist/
+
+# Arquivos de ambiente
+.env
