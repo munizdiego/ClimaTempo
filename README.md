@@ -1,36 +1,44 @@
-CLIMATEMPO
-A ClimaTempo é uma API que permite consultar as condições climáticas de uma cidade, utilizando uma requisição HTTP. Através de parâmetros específicos, é possível definir filtros para personalizar as informações desejadas.
-A manipulação destes dados é documentada conforme SWAGGER no link /swagger.
+# 🌦️ CLIMATEMPO API
 
-Para melhor compreensão esta api possui as seguintes configurações:
-Framework: Node.js;
-Linguagem: Typescript;
-Pacote: NPM;
-Bibliotecas: Express, MySQL2, JsonWebToken, UUID, Swagger-Jsdoc, Swagger-UI-Express
+A **ClimaTempo** é uma API que permite consultar as condições climáticas de uma cidade utilizando requisições HTTP. Através de parâmetros específicos, é possível definir filtros para personalizar as informações desejadas.
 
-COMO FUNCIONA?
-Esta aplicação funciona de forma similar mas não essencialmente igual ao Javascript, pois sua forma de desenvolvimento inicia-se com o comando "npm run dev", enquanto para a produção o comando é gerar e iniciar, ou seja, "npm run build" e "npm run start" respectivamente. Ao gerar a produção, os arquivos são gerados em uma pasta com o nome de dist, onde foram gerados os arquivos estáticos em Javascript.
+A documentação completa da API está disponível via **Swagger** no caminho `/swagger`.
 
-A pergunta talvez seja: Por que não desenvolver diretamente em Javascript? O Typescript, além de uma linguagem que baseia-se também no ECMASCRIPT, também melhora em relação a outra linguagem devido sua tipagem, ou seja, sistema que define como as variáveis são manipuladas em relação aos tipos de dados. Dessa maneira, a aplicação responderá com um erro caso o tipo de dado tratado não enquadra-se ao que é esperado.
+---
 
-Felizmente, esta aplicação é razoavelmente fácil de ser interpretada por qualquer pessoa experiente em Javascript.
+## 📌 ROTAS DISPONÍVEIS
 
-ORGANIZAÇÃO DE PASTAS
-/(raiz)
-    /src            pasta de recursos da aplicação
-    /services       pasta de arquivos de manipulação com o banco de dados
-    /controllers    pasta de arquivos de manipulação lógica das rotas
-    /routes         pasta de arquivos de manipulação de rotas
-    /swagger        pasta de arquivos para padronização de schemas
-    /interfaces     pasta de arquivos para tipagem de dados em Services e Controllers
-/node_modules       pasta gerada pelo pacote npm com base nas dependências da aplicação
-/dist               pasta gerada pelos comandos de produção
+### 🔒 Geração de token para autenticação Bearer
+`Post /auth/login`
+- Retorna um token em formato de string, utilizado para autenticação via Authorization Bearer em rotas protegidas.
 
-PARA INICIALIZAÇÃO DA APLICAÇÃO
-Esta aplicação deve ser baixada em uma pasta local, e seguir o passo a seguir para construção de container:
-Build da Imagem e Inicialização dos Containers: docker-compose up --build
+### 🌍 Consultar condições climáticas em tempo real
+`GET /clima`
+- Retorna os dados climáticos diretamente da API do OpenWeather.
 
-Verificar Logs
+### 💾 Salvar dados climáticos no banco de dados
+`POST /clima/dados`
+- Armazena no banco de dados as informações climáticas obtidas da API do OpenWeather.
+
+### 📂 Consultar dados armazenados no banco de dados
+`GET /clima/database`
+- Retorna as condições climáticas com base nos registros salvos no banco de dados.
+
+---
+
+## 🚀 COMO INICIALIZAR A APLICAÇÃO
+
+### 📥 Clonar e configurar o ambiente
+1. Clone este repositório para sua máquina local.
+2. Certifique-se de ter o **Docker** instalado.
+
+### 🏗️ Construção e inicialização do container
+```sh
+docker-compose up --build
+```
+
+### 📜 Verificar logs
+```sh
 docker logs -f node_api_container
 docker logs -f mysql_container
 ```
@@ -38,30 +46,69 @@ docker logs -f mysql_container
 ### 🛠️ Acessar o MySQL dentro do container
 ```sh
 docker exec -it mysql_container mysql -u usuario -p
+```
 
-Modalidades de Contratação
-● (código = 1) Leilão - Eletrônico
-● (código = 2) Diálogo Competitivo
-● (código = 3) Concurso
-● (código = 4) Concorrência - Eletrônica
-● (código = 5) Concorrência - Presencial
-● (código = 6) Pregão - Eletrônico
-● (código = 7) Pregão - Presencial
-● (código = 8) Dispensa de Licitação
-● (código = 9) Inexigibilidade
-● (código = 10) Manifestação de Interesse
-● (código = 11) Pré-qualificação
-● (código = 12) Credenciamento
-● (código = 13) Leilão - Presencial
+---
 
-Identificação de Usuários
-São sistemas que obtiveram o credenciamento ao PCNCP no ambiente de produção, sendo até o momento 286 o total de integrados.
-Acesse https://www.gov.br/pncp/pt-br/pncp/portais-integrados-ao-pncp
-O código padrão é 3 para divulgações realizadas pelo Compras.gov.br
+## ⚙️ FUNCIONAMENTO DA APLICAÇÃO
 
-https://pncp.gov.br/app/entidades-dominio
-https://catalogo.compras.gov.br/cnbs-web/busca
-PCA: plano de contratações anual definido na lei 14.133/2021
-https://www.gov.br/pncp/pt-br/central-de-conteudo/manuais/versoes-anteriores/ManualPNCPAPIConsultasVerso1.0.pdf
+A aplicação utiliza **Node.js** e **TypeScript** para proporcionar um ambiente tipado e mais seguro em relação ao JavaScript puro.
 
+### 📌 Comandos principais:
+- **Modo desenvolvimento:**
+  ```sh
+  npm run dev
+  ```
+- **Construção para produção:**
+  ```sh
+  npm run build
+  ```
+- **Execução em produção:**
+  ```sh
+  npm run start
+  ```
+
+### 🎯 Por que TypeScript?
+O TypeScript oferece um sistema de **tipagem estática**, ajudando a evitar erros ao definir como as variáveis são manipuladas. Isso garante maior robustez e previsibilidade no desenvolvimento.
+
+---
+
+## 📂 ESTRUTURA DE PASTAS
+
+```
+/(raiz)
+ ├── /src                # Código-fonte principal
+ │   ├── /controllers    # Lógica de manipulação das rotas
+ │   ├── /interfaces     # Definição de tipos para Services e Controllers
+ │   ├── /lib            # Conexão e manipulação do banco de dados
+ │   ├── /routes         # Definição das rotas da API
+ │   ├── /services       # Serviços e regras de negócios
+ │   ├── /swagger        # Esquemas e documentação da API
+ ├── /node_modules       # Pacotes e dependências do projeto
+ ├── /dist               # Arquivos gerados para produção
+```
+
+---
+
+## 🔧 CONFIGURAÇÕES E TECNOLOGIAS
+
+- **Framework:** Node.js
+- **Linguagem:** TypeScript
+- **Gerenciador de Pacotes:** NPM
+- **Banco de Dados:** MySQL
+- **Bibliotecas Principais:**
+  - Express
+  - MySQL2
+  - JsonWebToken
+  - UUID
+  - Swagger-Jsdoc
+  - Swagger-UI-Express
+
+---
+
+## 📝 OBSERVAÇÕES FINAIS
+
+Esta API foi projetada para ser intuitiva e de fácil utilização, facilitando a integração de dados climáticos em diferentes aplicações.
+
+Para dúvidas ou contribuições, sinta-se à vontade para abrir uma **issue** ou um **pull request**. 🌍☁️
 

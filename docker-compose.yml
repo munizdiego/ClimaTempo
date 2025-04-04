@@ -40,7 +40,7 @@ services:
       - "3321:3321"
     volumes:
       - .:/usr/src/app
-    command: ["npm", "start"]
+    command: ["npm", "run", "dev"]
 
 volumes:
   mysql_data:
