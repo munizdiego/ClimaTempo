@@ -6,6 +6,21 @@
  * Database.initialize() uma vez antes de qualquer outra parte.
  * Como é um método assíncrono, ela espera usar await ao chamá-la 
  * dentro de uma função async de nível superior.
+ * 
+ * Método initialize Inicializa o pool de conexões do MySQL se ele ainda 
+ * não tiver sido criado. Este método deve ser chamado uma única 
+ * vez no início da aplicação.
+ * 
+ * Método ensurePoolInitialized garante que o pool esteja 
+ * inicializado antes de executar uma query
+ * 
+ * Método query executa uma consulta SQL com parâmetros opcionais 
+ * e tipagem genérica para o resultado
+ * 
+ * Método execute executa uma consulta SQL que retorna informações 
+ * de "ResultSetHeader" (INSERT, UPDATE, DELETE)
+ * 
+ * Método closePool encerra todas as conexões no pool
  */
 
 import mysql, { Pool, RowDataPacket, ResultSetHeader } from 'mysql2/promise';
@@ -22,10 +37,6 @@ export class Database {
         // Impede a criação de novas instâncias da classe Database
     }
 
-    /**
-     * Inicializa o pool de conexões do MySQL se ele ainda não tiver sido criado. 
-     * Este método deve ser chamado uma única vez no início da aplicação.
-     */
     public static async initialize(): Promise<void> {
         if (!this.pool) {
             try {
@@ -35,27 +46,25 @@ export class Database {
                     password: String(process.env.DB_PASSWORD),
                     database: process.env.DB_DATABASE,
                     port: Number(process.env.DB_PORT),
-                    waitForConnections: true, // Esperar por conexões se todas estiverem em uso
-                    connectionLimit: 10,    // Limite máximo de conexões no pool (ajuste conforme necessário)
-                    queueLimit: 0             // Fila ilimitada para solicitações de conexão
+                    waitForConnections: true,
+                    connectionLimit: 10,
+                    queueLimit: 0 
                 });
                 await this.pool.getConnection(); // Testa a conexão inicial
                 console.log('Conexão com o banco de dados estabelecida.');
             } catch (error) {
                 console.error('Erro ao inicializar o pool de conexões:', error);
-                throw error; // Rejeita a promise para indicar falha na inicialização
+                throw error;
             }
         }
     }
 
-    // Garante que o pool esteja inicializado antes de executar uma query
     private static async ensurePoolInitialized(): Promise<void> {
         if (!this.pool) {
             await this.initialize();
         }
     }
 
-    // Executa uma consulta SQL com parâmetros opcionais e tipagem genérica para o resultado
     public static async query<T extends RowDataPacket>(
         sql: string,
         params: any[] = []
@@ -67,11 +76,10 @@ export class Database {
             return rows;
         } catch (error) {
             console.error('Erro ao executar a query:', sql, params, error);
-            throw error; // Rejeita a promise em caso de erro na query
+            throw error;
         }
     }
 
-    // Executa uma consulta SQL que retorna informações de "ResultSetHeader" (INSERT, UPDATE, DELETE)
     public static async execute(
         sql: string,
         params: any[] = []
@@ -83,11 +91,10 @@ export class Database {
             return results;
         } catch (error) {
             console.error('Erro ao executar a query:', sql, params, error);
-            throw error; // Rejeita a promise em caso de erro na execução
+            throw error;
         }
     }
 
-    // Encerra todas as conexões no pool
     public static async closePool(): Promise<void> {
         if (this.pool) {
             try {
@@ -96,7 +103,7 @@ export class Database {
                 console.log('Conexões com o banco de dados encerradas.');
             } catch (error) {
                 console.error('Erro ao encerrar o pool de conexões:', error);
-                throw error; // Rejeita a promise em caso de erro ao encerrar
+                throw error; 
             }
         }
     }

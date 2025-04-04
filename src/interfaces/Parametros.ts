@@ -1,3 +1,9 @@
+/**
+ * Os parâmetros são interfaces usadas para realizar
+ * as consultas de maneira segura, garantindo que os dados
+ * sejam tipados corretamente de acordo com sua "natureza".
+ */
+
 export interface ParametrosWeather {
   id?: number;       // id da cidade
   lat?: number;      // Latitude

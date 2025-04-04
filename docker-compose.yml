@@ -6,10 +6,10 @@ services:
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: senha_root
-      MYSQL_DATABASE: weather_db
+      MYSQL_ROOT_PASSWORD: senha
+      MYSQL_DATABASE: clima_tempo
       MYSQL_USER: usuario
-      MYSQL_PASSWORD: "senha_usuario#01"
+      MYSQL_PASSWORD: "senha"
     ports:
       - "5306:3306"
     volumes:
@@ -30,16 +30,16 @@ services:
         condition: service_healthy
     environment:
       DB_USER: usuario
-      DB_PASSWORD: "senha_usuario#01"
+      DB_PASSWORD: "senha"
       DB_HOST: db
       DB_PORT: 3306
-      DB_DATABASE: weather_db
-      OPENWEATHER_API_KEY: SUA_CHAVE_AQUI
+      DB_DATABASE: clima_tempo
+      OPENWEATHER_API_KEY: 1364e78d9bbbd755755d5843db8cb3d8
+      SECRET_KEY: 8e6f6f815b50f474cf0dc22d4f400725
     ports:
-      - "5000:3000"
+      - "3321:3321"
     volumes:
-      - .:/api
-      - /api/node_modules
+      - .:/usr/src/app
     command: ["npm", "start"]
 
 volumes:

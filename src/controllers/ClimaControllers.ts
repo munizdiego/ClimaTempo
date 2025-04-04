@@ -1,4 +1,3 @@
-import { WeatherResponse } from "./../interfaces/OpenWeather";
 /**
  * Esta classe de controladores é responsável por interpretar as requisições
  * HTTP e executar a programação conforme cada rota, tratando as respostas
@@ -6,13 +5,25 @@ import { WeatherResponse } from "./../interfaces/OpenWeather";
  * retornar as ações propostas pelo Recrutador, como CRUD do Banco de Dados.
  *
  * Método getClima obtém os dados do clima com base nos parâmetros fornecidos,
- * retornando informações diretamente da API pública do OpenWeather.
- */
+ * e tipados conforme ParametrosWeather, retornando informações diretamente 
+ * da API pública do OpenWeather.
+ * 
+ * Método getClimaPostBancoDados recebe parâmetros para filtragem conforme tipado
+ * por ParametrosWeather, no entanto, se a pesquisa não retornar nulo, ele 
+ * utilizará o método createClimaDB para inserir ao banco e em seguida retornará
+ * os resultados ao usuário.
+ * 
+ * Método getClimaBancoDados recebe parâmetros dinâmicos para filtragem de
+ * dados diretamente do banco de dados, inseridos a partir do método anterior,
+ * o método getClimaPostBancoDados.
+ * 
+ * Se deseja consultar e salvar novos dados, utilize primeiro getClimaPostBancoDados
+ * e em seguida getClimaBancoDados para maiores detalhes.
+*/
 
 import { Request, Response } from "express";
 import { ClimaServices } from "./../services/ClimaServices";
 import { ParametrosClimaBancoDados, ParametrosWeather } from "../interfaces/Parametros";
-import { Database } from "../lib/dataBase";
 
 export class ClimaControllers {
   public static async getClimaAPI(req: Request, res: Response) {
@@ -47,7 +58,7 @@ export class ClimaControllers {
     }
   }
 
-  public static async getClimaPostBancoDados(req: Request, res: Response) {
+  public static async postClimaPostBancoDados(req: Request, res: Response) {
     const parametros: ParametrosWeather =
       req.query as unknown as ParametrosWeather;
     try {

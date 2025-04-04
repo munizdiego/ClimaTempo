@@ -81,7 +81,7 @@ export interface City {
 }
 
 // Tipagem principal para a resposta do clima do local requisitado
-export interface WeatherResponse {
+export interface OpenWeatherResponse {
   cod?: number;
   message?: string;
   cnt?: number;

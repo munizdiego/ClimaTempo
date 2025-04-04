@@ -5,28 +5,40 @@
  *
  * O método getClimaCidade recebe os parâmetros fornecidos pelo usuário,
  * seguindo a tipagem da interface ParametrosWeather. Ao ser executado com sucesso,
- * retorna um array de objetos tipados como WeatherResponse.
+ * retorna um array de objetos tipados como OpenWeatherResponse.
  *
  * API_KEY é a variável da API Key esperada pela requisição de OpenWather
  *
  * Método getClimaCidade é reponsável por obter a cidade com base nos parâmetros fornecidos.
  * @param parametros Parâmetros de consulta da API.
- * @parametrosComPadrao são parâmetros pré-estabelecidos para a pesquisa, podendo ser modificados caso o usuário incluir na requisição.
- * @returns O objeto de WeatherResponse ou null caso ocorra 404.
+ * @parametrosComPadrao são parâmetros pré-estabelecidos para a pesquisa, podendo 
+ * ser modificados caso o usuário incluir na requisição.
+ * @returns O objeto de OpenWeatherResponse ou null caso ocorra 404.
  * @throws Exceção caso ocorra um erro de comunicação ou validação.
  *
  *
  * Método handleApiError lida com erros da API de forma detalhada.
  * @param error Erro capturado durante a comunicação com a API.
  * @throws Exceção com a mensagem de erro apropriada.
+ * 
+ * Método createClimaDB lida com a inserção de dados ao Banco de Dados,
+ * conforme os parâmetros tipados de ParametrosClimaBancoDados e que
+ * responde como verdadeiro se houve inclusão e false quando não
+ * 
+ * Método getClimaDB recebe parâmetros dinâmicos de acordo com a tipagem de
+ * ParametrosClimaBancoDados, ao qual são dinamicamente inclusos ao script 
+ * de pesquisa do MySQL, retornando uma array da tipagem ClimaResponse quando
+ * há retorno de dados ou null quando não.
  */
 
 import axios from "axios";
 import dotenv from "dotenv";
-import { ParametrosClimaBancoDados, ParametrosWeather } from "../interfaces/Parametros";
-import { City, WeatherArray, WeatherResponse } from "../interfaces/OpenWeather";
+
 import { Database } from "../lib/dataBase";
 import { OkPacketParams, RowDataPacket } from "mysql2";
+
+import { ParametrosClimaBancoDados, ParametrosWeather } from "../interfaces/Parametros";
+import { City, WeatherArray, OpenWeatherResponse } from "../interfaces/OpenWeather";
 import { ClimaResponse } from "../interfaces/Clima";
 
 dotenv.config();
@@ -38,7 +50,7 @@ export class ClimaServices {
 
   public static async getClimaCidade(
     parametros: ParametrosWeather
-  ): Promise<WeatherResponse[] | null> {
+  ): Promise<OpenWeatherResponse[] | null> {
     try {
       const parametrosPadrao = {
         units: "metric",
@@ -51,7 +63,7 @@ export class ClimaServices {
       });
 
       if (response.status === 200) {
-        return response.data as WeatherResponse[];
+        return response.data as OpenWeatherResponse[];
       }
 
       if (response.status === 204) {

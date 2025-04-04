@@ -1,8 +1,10 @@
 /**
  * @swagger
- * /clima:
- *   get:
- *     summary: Retorna as condições climáticas de uma cidade ou coordenadas geográficas diretamente da API de OpenWeather
+ * /clima/dados:
+ *   post:
+ *     summary: Utilize esta rota para salvar no Banco de Dados as condições climáticas diretamente da API de OpenWeather
+ *     security:
+ *       - BearerAuth: []
  *     tags: [CLIMA]
  *     parameters:
  *       - in: query
@@ -50,7 +52,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/WeatherResponse'
+ *               $ref: '#/components/schemas/OpenWeatherResponse'
  *       204:
  *         description: Nenhum dado de clima encontrado para a cidade ou coordenadas fornecidas
  *       400:

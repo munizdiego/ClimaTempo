@@ -1,8 +1,16 @@
-CREATE TABLE IF NOT EXISTS weather (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    city VARCHAR(100),
-    temperature FLOAT,
-    humidity INT,
-    description TEXT,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+CREATE TABLE IF NOT EXISTS `clima_tempo`.`clima` (
+  `id_clima` INT NOT NULL AUTO_INCREMENT,
+  `dt` INT NOT NULL,
+  `main` JSON NULL DEFAULT NULL,
+  `weather` JSON NULL DEFAULT NULL,
+  `clouds` JSON NULL DEFAULT NULL,
+  `wind` JSON NULL DEFAULT NULL,
+  `visibility` INT NULL DEFAULT NULL,
+  `pop` FLOAT NULL DEFAULT NULL,
+  `rain` JSON NULL DEFAULT NULL,
+  `sys` JSON NULL DEFAULT NULL,
+  `dt_txt` VARCHAR(255) NOT NULL,
+  `city` JSON NOT NULL,
+  `data_criacao` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id_clima`))
+ENGINE = InnoDB

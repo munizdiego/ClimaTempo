@@ -1,3 +1,7 @@
+/**
+ * Interface de informações amarzenadas no banco de dados
+ */
+
 import { City, Clouds, Main, Rain, Sys, Weather, Wind } from "./OpenWeather";
 
 export interface ClimaResponse {

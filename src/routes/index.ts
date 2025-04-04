@@ -6,12 +6,13 @@
 import express from "express";
 import { setupSwagger } from "../swagger";
 
-import climaRoutes from "./ClimaRoutes"
+import climaRoutes from "./ClimaRoutes";
+import authRoutes from "./AuthRoutes";
 
 const router = express.Router();
 
 setupSwagger(router); // Configurar Swagger na rota principal
 
-router.use(climaRoutes); // Outras rotas adicionadas
+router.use(climaRoutes, authRoutes); // Outras rotas adicionadas
 
 export default router;
