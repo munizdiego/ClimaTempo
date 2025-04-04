@@ -4,7 +4,6 @@
 .vscode/
 
 # Arquivos de dependências
-node_modules/
 dist/
 
 # Arquivos de ambiente
